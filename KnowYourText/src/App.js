@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import './App.css';
-// import About from './components/About';
+import About from './components/About';
 import Navbar from './components/Navbar';
 import TextForm from './components/TextForm';
 import Alert from './components/Alert';
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route
-// } from "react-router-dom";
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 function App() {
   const [mode, setMode] = useState("light");
   const [alert, setAlert] = useState(null)
@@ -36,19 +37,18 @@ function App() {
   }
   return (
     <>
-      {/* <Router> */}
+      <Router>
         <Navbar title="KnowYourText" mode={mode} toggleMode={toggleMode} />
         <Alert alert={alert} />
         <div className="container">
-          {/* <Routes>
-            <Route exact path="/about" element={<About />} /> */}
+          <Routes>
+            <Route exact path="/about" element={<About mode={mode} />} />
             {/* always use exact before path otherwise react will partially match the req and some other page may show which was not asked  */}
-            {/* <Route exact path="/" element={<TextForm heading="Enter Your Text To Analyze" mode={mode} showAlert={showAlert} />
-}/>
-          </Routes> */}
-          <TextForm heading="Enter Your Text To Analyze" mode={mode} showAlert={showAlert} />
+            <Route exact path="/" element={<TextForm heading="Enter Your Text To Analyze" mode={mode} showAlert={showAlert} />}/>
+          </Routes>
+          {/* <TextForm heading="Enter Your Text To Analyze" mode={mode} showAlert={showAlert} /> */}
         </div>
-      {/* </Router> */}
+      </Router>
       {/* <About /> */}
     </>
   );

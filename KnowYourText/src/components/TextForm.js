@@ -1,35 +1,37 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 export default function TextForm(props) {
-    const handleonchange=(event)=>{
+    const handleonchange = (event) => {
         setText(event.target.value)
     }
-    const handleupclick=()=>{
-        let newtext=text.toUpperCase();
+    const handleupclick = () => {
+        let newtext = text.toUpperCase();
         setText(newtext)
-        props.showAlert("Converted to UpperCase!","success");
+        props.showAlert("Converted to UpperCase!", "success");
     }
-    const handlelowerclick=()=>{
-        let newtext=text.toLowerCase();
+    const handlelowerclick = () => {
+        let newtext = text.toLowerCase();
         setText(newtext)
-        props.showAlert("Converted to LowerCase!","success");
+        props.showAlert("Converted to LowerCase!", "success");
 
     }
-    const handleclearclick=()=>{
-        let newtext="";
+    const handleclearclick = () => {
+        let newtext = "";
         setText(newtext)
-        props.showAlert("TextArea Cleared!","success");
+        props.showAlert("TextArea Cleared!", "success");
     }
-    const handleCopy=()=>{
-        let text=document.getElementById("myBox")
-        text.select();
-        navigator.clipboard.writeText(text.value)
-        props.showAlert("Text Copied!","success");
+    const handleCopy = () => {
+        // let text = document.getElementById("myBox")
+        // text.select();
+        navigator.clipboard.writeText(text)
+        //if using navigator api no need to select and deselect the text
+        // document.getSelection().removeAllRanges()
+        props.showAlert("Text Copied!", "success");
     }
-    const handleSpaces=()=>{
-        let newText= text.split(/[ ]+/)
+    const handleSpaces = () => {
+        let newText = text.split(/[ ]+/)
         setText(newText.join(" "))
-        props.showAlert("Extra Spaces removed!","success");
+        props.showAlert("Extra Spaces removed!", "success");
     }
     // const handleWords=(text)=>{
     //     if(text=="")
@@ -37,27 +39,27 @@ export default function TextForm(props) {
     //     else
     //     return text.split(" ").length;
     // }
-    const[text, setText]= useState("")
+    const [text, setText] = useState("")
     return (
         <>
-            <div className="container my-3" style={{color : props.mode==="dark"?"white":"black"}}>
+            <div className="container my-3" style={{ color: props.mode === "dark" ? "white" : "black" }}>
                 <h1>{props.heading}</h1>
-                <textarea className="form-control" value={text} style={{background : props.mode==="dark"?"#382e6e":"white" , color:props.mode==="dark"?"white":"black"}} onChange={handleonchange} id="myBox" rows="8"></textarea>
-                <button className="btn btn-primary" onClick={handleupclick}>Convert to UpperCase</button>
-                <button className="btn btn-primary" onClick={handlelowerclick}>Convert to LowerCase</button>
-                <button className="btn btn-primary" onClick={handleSpaces}>Remove Extra Spaces</button>
-                <button className="btn btn-primary" onClick={handleCopy}>Copy Text</button>
-                <button className="btn btn-primary" onClick={handleclearclick}>Clear Text</button>
+                <textarea className="form-control" value={text} style={{ background: props.mode === "dark" ? "#382e6e" : "white", color: props.mode === "dark" ? "white" : "black" }} onChange={handleonchange} id="myBox" rows="8"></textarea>
+                <button disabled={text.length===0} className="btn btn-primary" onClick={handleupclick}>Convert to UpperCase</button>
+                <button disabled={text.length===0} className="btn btn-primary" onClick={handlelowerclick}>Convert to LowerCase</button>
+                <button disabled={text.length===0} className="btn btn-primary" onClick={handleSpaces}>Remove Extra Spaces</button>
+                <button disabled={text.length===0} className="btn btn-primary" onClick={handleCopy}>Copy Text</button>
+                <button disabled={text.length===0} className="btn btn-primary" onClick={handleclearclick}>Clear Text</button>
             </div>
-            <div className="container my-2" style={{color : props.mode==="dark"?"white":"black"}}>
+            <div className="container my-2" style={{ color: props.mode === "dark" ? "white" : "black" }}>
                 <h2>Your Text Summary</h2>
-                <p> Number of Words {text.length===0? 0 :text.split(" ").length}</p>
-                <p>Number of Characters {text.length}</p>
-                <p>Number of Lines {text.length===0?0:text.split("\n").length}</p>
-                <p>Estimated Reading Time {0.008 * text.split(" ").length} </p>
+                <p> Number of Words : {text.split(/\s+/).filter((element) => { return element.length !== 0 }).length}</p>
+                <p>Number of Characters : {text.length}</p>
+                <p>Number of Lines : {text.length === 0 ? 0 : text.split("\n").length}</p>
+                <p>Estimated Reading Time : {0.008 * text.split(" ").filter((element) => { return element.length !== 0 }).length} Minutes </p>
                 <p></p>
                 <h3>Preview</h3>
-                <p>{text.length>0?text:"Enter your text in above textbox to preview it."}</p>
+                <p>{text.length > 0 ? text : "Enter your text in above textbox to preview it."}</p>
             </div>
         </>
     )
